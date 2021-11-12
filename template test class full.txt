@@ -1,0 +1,45 @@
+#include <iostream>
+
+using namespace std;
+
+template<typename T>
+class Singleton {
+ 
+    private:
+        static T* _instance;
+        
+        Singleton() {
+          cout << "Create Singleton" << endl;
+        }
+
+    public:
+        static T& GetInstance() {
+            if (_instance == nullptr) {
+                _instance = new T();
+            } 
+            return *(Singleton::_instance);
+        }
+       
+        Singleton(Singleton const&) = delete;
+};
+
+class TestClass{
+    friend class Singleton<TestClass>;
+    
+    public:
+        ~TestClass(){};
+        TestClass(){};
+        
+        void print(){
+            cout << "This is test class";
+        }
+};
+
+template<typename T>
+T* Singleton<T>::_instance = nullptr;
+
+int main(){
+    Singleton<TestClass>::GetInstance().print();
+   
+   return 0;
+}
